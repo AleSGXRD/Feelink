@@ -1,0 +1,12 @@
+@import "tailwindcss-primeui";
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
