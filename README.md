@@ -24,3 +24,11 @@ Finalmente, la app contará con un enlace a Ko-fi para que los usuarios puedan r
 <h3>Modelo de negocio</h3>
 
 ![Descripción](docs/plantuml.png)
+
+<h3>Wireframe</h3>
+
+![Descripción](docs/wireframe.png)
+
+<h3>Diseño de Componentes</h3>
+
+![Descripción](docs/componentization.png)
