@@ -15,10 +15,13 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Friendship {
+public class FriendshipRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    private boolean responded;
+    private boolean accepted;
 
     @ManyToOne()
     @JoinColumn(name = "from_user_id", nullable = false)
