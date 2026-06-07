@@ -1,4 +1,4 @@
-package com.sigith.feelink.dto.pulse;
+package com.sigith.feelink.dto;
 
 import lombok.*;
 
@@ -10,5 +10,5 @@ import lombok.*;
 public class CreatePulseDTO {
     private String fromUserId;
     private String toUserId;
-    private String messageId;
+    private Long messageId;
 }
