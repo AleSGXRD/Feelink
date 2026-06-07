@@ -1,9 +1,15 @@
 package com.sigith.feelink.dto.pulse;
 
 import com.sigith.feelink.model.MessageType;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ResponsePulseDTO {
     private String fromUserId;
     private String fromUserName;
