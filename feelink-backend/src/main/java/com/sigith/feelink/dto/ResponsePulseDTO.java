@@ -1,4 +1,4 @@
-package com.sigith.feelink.dto.pulse;
+package com.sigith.feelink.dto;
 
 import com.sigith.feelink.model.MessageType;
 import lombok.*;
@@ -17,7 +17,7 @@ public class ResponsePulseDTO {
     private String toUserId;
     private String toUserName;
 
-    private String messageId;
+    private Long messageId;
     private MessageType messageType;
     private String messageDetail;
 

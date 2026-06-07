@@ -1,4 +1,4 @@
-package com.sigith.feelink.dto.pulse;
+package com.sigith.feelink.dto;
 
 import lombok.*;
 
