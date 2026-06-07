@@ -1,7 +1,6 @@
 package com.sigith.feelink.dto.friendship;
 
-public class UpdateFriendshipDTO {
+public class DeleteFriendshipDTO {
     private String fromUserId;
     private String toUserId;
-    private boolean accepted;
 }
