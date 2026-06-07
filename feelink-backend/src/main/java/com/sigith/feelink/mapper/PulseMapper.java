@@ -8,7 +8,7 @@ import com.sigith.feelink.model.User;
 
 
 public class PulseMapper {
-    public static ResponsePulseDTO toDto(Pulse pulse){
+    public ResponsePulseDTO toResponseDto(Pulse pulse){
         User fromUser = pulse.getFromUser();
         User toUser = pulse.getToUser();
         Message message = pulse.getMessage();
@@ -22,5 +22,20 @@ public class PulseMapper {
                 .messageDetail(message.getMessage())
                 .messageType(message.getType())
                 .build();
+    }
+
+    public Pulse toEntity(
+            CreatePulseDTO dto,
+            User fromUser,
+            User toUser,
+            Message message
+    ) {
+        Pulse pulse = new Pulse();
+
+        pulse.setFromUser(fromUser);
+        pulse.setToUser(toUser);
+        pulse.setMessage(message);
+
+        return pulse;
     }
 }

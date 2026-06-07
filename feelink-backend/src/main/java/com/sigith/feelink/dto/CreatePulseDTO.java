@@ -10,5 +10,5 @@ import lombok.*;
 public class CreatePulseDTO {
     private String fromUserId;
     private String toUserId;
-    private String messageId;
+    private Long messageId;
 }
