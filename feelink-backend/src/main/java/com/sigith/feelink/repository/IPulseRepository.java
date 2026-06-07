@@ -14,15 +14,32 @@ public interface IPulseRepository extends JpaRepository<Pulse, String> {
     @Query("""
         SELECT p
         FROM Pulse p
-        WHERE p.fromUser.id = :fromUserId
+        WHERE p.fromUser.id = :userId
         AND (
             :toUserId IS NULL
             OR p.toUser.id = :toUserId
         )
+        AND p.deletedBySenderAt IS NULL
     """)
     Page<Pulse> findSentPulses(
-            String fromUserId,
+            String userId,
             String toUserId,
+            Pageable pageable
+    );
+
+    @Query("""
+        SELECT p
+        FROM Pulse p
+        WHERE p.toUser.id = :userId
+        AND (
+            :fromUserId IS NULL
+            OR p.fromUserId.id = :fromUserId
+        )
+        AND p.deletedByReceiverAt IS NULL
+    """)
+    Page<Pulse> findReceivedPulses(
+            String userId,
+            String fromUserId,
             Pageable pageable
     );
 }

@@ -32,4 +32,7 @@ public class Pulse {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    private LocalDateTime deletedBySenderAt;
+    private LocalDateTime deletedByReceiverAt;
 }
