@@ -5,8 +5,9 @@ import com.sigith.feelink.dto.ResponsePulseDTO;
 import com.sigith.feelink.model.Message;
 import com.sigith.feelink.model.Pulse;
 import com.sigith.feelink.model.User;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class PulseMapper {
     public ResponsePulseDTO toResponseDto(Pulse pulse){
         User fromUser = pulse.getFromUser();

@@ -14,7 +14,7 @@ public interface IPulseRepository extends JpaRepository<Pulse, String> {
     @Query("""
         SELECT p
         FROM Pulse p
-        WHERE p.fromUser.id = :userId
+        WHERE p.fromUser.id = :fromUserId
         AND (
             :toUserId IS NULL
             OR p.toUser.id = :toUserId
@@ -22,7 +22,7 @@ public interface IPulseRepository extends JpaRepository<Pulse, String> {
         AND p.deletedBySenderAt IS NULL
     """)
     Page<Pulse> findSentPulses(
-            String userId,
+            String fromUserId,
             String toUserId,
             Pageable pageable
     );
@@ -30,15 +30,15 @@ public interface IPulseRepository extends JpaRepository<Pulse, String> {
     @Query("""
         SELECT p
         FROM Pulse p
-        WHERE p.toUser.id = :userId
+        WHERE p.toUser.id = :toUserId
         AND (
             :fromUserId IS NULL
-            OR p.fromUserId.id = :fromUserId
+            OR p.fromUser.id = :fromUserId
         )
         AND p.deletedByReceiverAt IS NULL
     """)
     Page<Pulse> findReceivedPulses(
-            String userId,
+            String toUserId,
             String fromUserId,
             Pageable pageable
     );
