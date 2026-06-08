@@ -13,7 +13,7 @@ public interface IFriendshipRequestRepository extends JpaRepository<FriendshipRe
         SELECT fr
         FROM FriendshipRequest fr
         WHERE  fr.fromUser.id = :userId
-        AND p.deletedBySenderAt IS NULL
+        AND fr.deletedBySenderAt IS NULL
         AND (:pending = false OR fr.responded = false)
     """)
     Page<FriendshipRequest> getSentFriendshipRequests(String userId, boolean pending, Pageable pageable);
@@ -22,7 +22,7 @@ public interface IFriendshipRequestRepository extends JpaRepository<FriendshipRe
         SELECT fr
         FROM FriendshipRequest fr
         WHERE  fr.toUser.id = :userId
-        AND p.deletedBySenderAt IS NULL
+        AND fr.deletedByReceiverAt IS NULL
         AND (:pending = false OR fr.responded = false)
     """)
     Page<FriendshipRequest> getReceivedFriendshipRequests(String userId, boolean pending, Pageable pageable);
