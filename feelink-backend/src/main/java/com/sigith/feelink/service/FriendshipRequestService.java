@@ -6,7 +6,6 @@ import com.sigith.feelink.dto.friendship.request.ResponseFriendshipRequestDTO;
 import com.sigith.feelink.exception.ConflictException;
 import com.sigith.feelink.exception.ResourceNotFoundException;
 import com.sigith.feelink.mapper.FriendshipRequestMapper;
-import com.sigith.feelink.model.Friendship;
 import com.sigith.feelink.model.FriendshipRequest;
 import com.sigith.feelink.model.User;
 import com.sigith.feelink.repository.IFriendshipRequestRepository;
@@ -45,11 +44,19 @@ public class FriendshipRequestService {
                                 new ResourceNotFoundException("Not found User:" + dto.getToUserId())
                 );
 
-        boolean isActive = friendshipService.isFriendshipActive(fromUser, toUser);
+        boolean isFriendshipActive = friendshipService.isFriendshipActive(fromUser, toUser);
 
-        if(isActive){
+        if(isFriendshipActive){
             throw new ConflictException(
                     "Friendship already exists"
+            );
+        }
+
+        boolean existsFriendshipRequestActive = friendshipRequestRepository.existsActiveFriendshipRequest(fromUser.getId(), toUser.getId());
+
+        if(existsFriendshipRequestActive){
+            throw new ConflictException(
+                    "A Friendship request is already pending"
             );
         }
 
