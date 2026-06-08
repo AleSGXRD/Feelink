@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -124,5 +125,68 @@ public class FriendshipRequestService {
         );
 
         return friendshipRequestRepository.getReceivedFriendshipRequests(userId, pending, pageable);
+    }
+
+    public void deleteFriendshipRequest(
+            String userId,
+            String requestId
+    ) throws AccessDeniedException{
+        FriendshipRequest friendshipRequest = friendshipRequestRepository.findById(requestId)
+                .orElseThrow(
+                        () ->
+                            new ResourceNotFoundException("Friendship request not found: " + requestId)
+                );
+
+        boolean isSender = friendshipRequest.getFromUser().getId().equals(userId);
+        boolean isReceiver = friendshipRequest.getToUser().getId().equals(userId);
+
+        if(!isReceiver && !isSender){
+            throw new AccessDeniedException(
+                    "User can't access to this friendship request"
+            );
+        }
+
+        if (isSender){
+            if(friendshipRequest.getDeletedBySenderAt() != null){
+                throw new ConflictException(
+                        "Friendship request already deleted by user"
+                );
+            }
+            if(!friendshipRequest.isResponded()){
+                friendshipRequestRepository.delete(friendshipRequest);
+                return;
+            }
+            else{
+                friendshipRequest.setDeletedBySenderAt(
+                        LocalDateTime.now()
+                );
+            }
+        }
+
+        if(isReceiver){
+            if(friendshipRequest.getDeletedByReceiverAt() != null){
+                throw new ConflictException(
+                        "Friendship request already deleted by user"
+                );
+            }
+
+            friendshipRequest.setDeletedByReceiverAt(
+                    LocalDateTime.now()
+            );
+
+            if (!friendshipRequest.isResponded()){
+                friendshipRequest.setResponded(true);
+                friendshipRequest.setAccepted(false);
+            }
+        }
+
+
+        if(friendshipRequest.getDeletedByReceiverAt() != null &&
+            friendshipRequest.getDeletedBySenderAt() != null){
+            friendshipRequestRepository.delete(friendshipRequest);
+            return;
+        }
+
+        friendshipRequestRepository.save(friendshipRequest);
     }
 }
