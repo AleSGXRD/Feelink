@@ -32,5 +32,7 @@ public class FriendshipRequest {
 
     @CreatedDate
     private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+
+    private LocalDateTime deletedBySenderAt;
+    private LocalDateTime deletedByReceiverAt;
 }
