@@ -55,7 +55,7 @@ public class PulseService {
                         ));
 
         friendshipRepository
-                .findActiveFriendship(
+                .existsActiveFriendship(
                         dto.getFromUserId(),
                         dto.getToUserId()
                 )

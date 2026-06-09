@@ -7,6 +7,10 @@ import com.sigith.feelink.model.Friendship;
 import com.sigith.feelink.model.User;
 import com.sigith.feelink.repository.IFriendshipRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,8 +35,18 @@ public class FriendshipService {
         return friendshipMapper.toResponseDto(saved);
     }
 
+    public Page<ResponseFriendshipDTO> getActiveFriendships(String userId, int page, int size){
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("createdAt").descending()
+        );
+
+        return friendshipRepository.findActiveFriendships(userId, pageable).map(friendshipMapper::toResponseDto);
+    }
+
     public boolean isFriendshipActive(User fromUser, User toUser){
-        Optional<Friendship> isActive = friendshipRepository.findActiveFriendship(fromUser.getId(), toUser.getId());
+        Optional<Friendship> isActive = friendshipRepository.existsActiveFriendship(fromUser.getId(), toUser.getId());
 
         return isActive.isPresent();
     }
