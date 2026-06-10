@@ -31,11 +31,11 @@ public class PulseService {
     private final IPulseRepository pulseRepository;
     private final IUserRepository userRepository;
     private final IMessageRepository messageRepository;
-    private final IFriendshipRepository friendshipRepository;
+    private final FriendshipService friendshipService;
 
     private final PulseMapper pulseMapper;
 
-    public ResponsePulseDTO create(CreatePulseDTO dto){
+    public ResponsePulseDTO create(CreatePulseDTO dto) throws AccessDeniedException{
         User fromUser = userRepository.findById(dto.getFromUserId())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
@@ -54,16 +54,12 @@ public class PulseService {
                                 "Message not found: " + dto.getMessageId()
                         ));
 
-        friendshipRepository
-                .existsActiveFriendship(
-                        dto.getFromUserId(),
-                        dto.getToUserId()
-                )
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Users are not friends"
-                        )
-                );
+        boolean friendshipActive = friendshipService.isFriendshipActive(fromUser, toUser);
+        if(!friendshipActive){
+            throw new AccessDeniedException(
+                    "User is not a friend of the another user"
+            );
+        }
 
         Pulse pulse = pulseMapper.toEntity(dto, fromUser, toUser, message);
 
