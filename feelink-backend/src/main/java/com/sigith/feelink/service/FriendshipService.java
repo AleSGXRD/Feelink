@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -47,12 +48,20 @@ public class FriendshipService {
         return friendshipRepository.findActiveFriendships(userId, pageable).map(friendshipMapper::toResponseDto);
     }
 
-    public void deleteFriendship(String friendshipId){
+    public void deleteFriendship(String friendshipId, String userId)
+        throws AccessDeniedException{
         Friendship friendship = friendshipRepository.findById(friendshipId)
                 .orElseThrow(
                         () ->
                         new ResourceNotFoundException("Friendship not found: " + friendshipId)
                 );
+
+        boolean isSender = friendship.getFromUser().getId().equals(userId);
+        boolean isReceiver = friendship.getToUser().getId().equals(userId);
+
+        if(!isSender && !isReceiver){
+            throw new AccessDeniedException("User can't access to this friendship");
+        }
 
         friendshipRepository.delete(friendship);
     }
