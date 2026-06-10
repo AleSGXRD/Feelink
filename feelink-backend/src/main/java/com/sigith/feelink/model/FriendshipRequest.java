@@ -1,10 +1,8 @@
 package com.sigith.feelink.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,13 +13,16 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FriendshipRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private boolean responded;
-    private boolean accepted;
+    @Builder.Default
+    private boolean responded = false;
+    @Builder.Default
+    private boolean accepted = false;
 
     @ManyToOne()
     @JoinColumn(name = "from_user_id", nullable = false)
@@ -32,5 +33,7 @@ public class FriendshipRequest {
 
     @CreatedDate
     private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+
+    private LocalDateTime deletedBySenderAt;
+    private LocalDateTime deletedByReceiverAt;
 }

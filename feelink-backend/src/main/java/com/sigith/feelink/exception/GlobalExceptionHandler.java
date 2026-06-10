@@ -34,4 +34,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(500)
                 .body(new ErrorResponse("Internal server error"));
     }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<String> handleConflict(
+            ConflictException ex
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }
