@@ -27,5 +27,4 @@ public class Friendship {
 
     @CreatedDate
     private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
 }

@@ -17,7 +17,6 @@ public class FriendshipMapper {
                 .fromUserName(fromUser.getUsername())
                 .fromUserId(fromUser.getId())
                 .createdAt(friendship.getCreatedAt())
-                .deletedAt(friendship.getDeletedAt())
                 .build();
     }
 

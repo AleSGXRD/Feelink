@@ -14,8 +14,7 @@ public interface IFriendshipRepository extends JpaRepository<Friendship, String>
     @Query("""
         SELECT f
         FROM Friendship f
-        WHERE f.deletedAt IS NULL
-        AND (
+        WHERE (
             (f.fromUser.id = :user1 AND f.toUser.id = :user2)
             OR
             (f.fromUser.id = :user2 AND f.toUser.id = :user1)
@@ -29,8 +28,7 @@ public interface IFriendshipRepository extends JpaRepository<Friendship, String>
     @Query("""
         SELECT f
         FROM Friendship f
-        WHERE f.deletedAt IS NULL
-        AND (
+        WHERE (
             (f.fromUser.id = :userId)
             OR
             (f.toUser.id = :userId)

@@ -2,6 +2,7 @@ package com.sigith.feelink.service;
 
 import com.sigith.feelink.dto.friendship.ResponseFriendshipDTO;
 import com.sigith.feelink.exception.ConflictException;
+import com.sigith.feelink.exception.ResourceNotFoundException;
 import com.sigith.feelink.mapper.FriendshipMapper;
 import com.sigith.feelink.model.Friendship;
 import com.sigith.feelink.model.User;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -43,6 +45,16 @@ public class FriendshipService {
         );
 
         return friendshipRepository.findActiveFriendships(userId, pageable).map(friendshipMapper::toResponseDto);
+    }
+
+    public void deleteFriendship(String friendshipId){
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(
+                        () ->
+                        new ResourceNotFoundException("Friendship not found: " + friendshipId)
+                );
+
+        friendshipRepository.delete(friendship);
     }
 
     public boolean isFriendshipActive(User fromUser, User toUser){
